@@ -9,15 +9,20 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  FocusNode focusNode = new FocusNode();
-  _focusShod
-@override
+  FocusNode textField = FocusNode();
+  FocusNode textField2 = FocusNode();
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    focusNode.addListener(() {
-      
+    textField.addListener(() {
+      setState(() {});
     });
+    textField2.addListener(() {
+      setState(() {});
+    });
+
+
   }
 
   @override
@@ -30,7 +35,8 @@ class _LoginScreenState extends State<LoginScreen> {
         alignment: AlignmentDirectional.bottomCenter,
         children: [
           _TopImage(),
-          _BottomContainer(),
+          Positioned(
+              top: 0, left: 0, right: 0, bottom: 40, child: _BottomContainer()),
         ],
       )),
     );
@@ -39,19 +45,18 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _TopImage() {
     return Column(
       children: [
-        Positioned(
-            child: Expanded(
-                child: Container(
+        Expanded(
+            child: Container(
           child: Image.asset('assets/images/rocket.png'),
           decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                Color(0xff323A99),
-                Color(0xffF98BFC),
-              ])),
-        ))),
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+            Color(0xff323A99),
+            Color(0xffF98BFC),
+          ])),
+        )),
         Expanded(
             child: Container(
           child: null,
@@ -62,118 +67,133 @@ class _LoginScreenState extends State<LoginScreen> {
 
 // تعریف 2 کالمن که یکی بالاش خالیه یکی پایینش اینارو تو استک قرار دادیم تا روی هم قراره بگیره
   Widget _BottomContainer() {
-    return Positioned(
-      // در آخر با استفاده از این ویجت کالمن پاییینی رو که بالاش برای قرار گرفتن عکس خالیه کمی از پایین میکنیم و به بالا میبریم تا روی عکس قرار بگیره
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 40,
-      child: Column(
-        children: [
-          Expanded(
-              child: Container(
-            child: null,
-          )),
-          Expanded(
-              child: Container(
-            decoration: BoxDecoration(
-                color: MainBackGroundColor,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(15),
-                    topRight: Radius.circular(15))),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 51,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Sign in to",
-                      style: TextStyle(
+    return Column(
+      children: [
+        Expanded(
+            child: Container(
+          child: null,
+        )),
+        Expanded(
+            child: Container(
+          decoration: BoxDecoration(
+              color: MainBackGroundColor,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(15), topRight: Radius.circular(15))),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 51,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Sign in to",
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    width: 6,
+                  ),
+                  Container(
+                    child: Image.asset(
+                      'assets/images/mood.png',
+                      width: 102,
+                      height: 25,
+                    ),
+                    padding: EdgeInsets.only(top: 1.9),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 34,
+              ),
+              Padding(
+                // decrease TextField Size put textField To Padding widget
+                padding: const EdgeInsets.symmetric(horizontal: 44),
+                child: TextField(
+                  focusNode: textField2,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'gi',
+                  ),
+                  decoration: InputDecoration(
+                      labelText: 'Email',
+                      labelStyle: TextStyle(
+                          fontFamily: 'gi',
+                          fontWeight: FontWeight.w500,
                           fontSize: 20,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      width: 6,
-                    ),
-                    Container(
-                      child: Image.asset(
-                        'assets/images/mood.png',
-                        width: 102,
-                        height: 25,
+                        color: textField2.hasFocus
+                            ? Color(0xffF35383)
+                            : Colors.white,
                       ),
-                      padding: EdgeInsets.only(top: 1.9),
-                    ),
-                  ],
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 17, horizontal: 17),
+                      focusedBorder: OutlineInputBorder(
+                        // TextField Border
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        borderSide:
+                            BorderSide(color: ButtonBackGroundColor, width: 3),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        // TextField Border
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        borderSide: BorderSide(color: GrayColor, width: 3),
+                      )),
                 ),
-                SizedBox(
-                  height: 34,
-                ),
-                Padding(
-                  // decrease TextField Size put textField To Padding widget
-                  padding: const EdgeInsets.symmetric(horizontal: 44),
-                  child: TextField(
-                    focusNode: ,
-                    decoration: InputDecoration(
-                        labelText: 'Email',
-                        labelStyle: TextStyle(
-                            fontFamily: 'gi',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 20,
-                            color: GrayColor),
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 17, horizontal: 17),
-                        focusedBorder: OutlineInputBorder(
-                          // TextField Border
-                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                          borderSide: BorderSide(
-                              color: ButtonBackGroundColor, width: 3),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          // TextField Border
-                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                          borderSide: BorderSide(color: GrayColor, width: 3),
-                        )),
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              Padding(
+                // decrease TextField Size put textField To Padding widget
+                padding: const EdgeInsets.symmetric(horizontal: 44),
+                child: TextField(
+                  focusNode: textField,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'gi',
                   ),
+                  decoration: InputDecoration(
+                      
+                      labelText: 'Password',
+                      labelStyle: TextStyle(
+                          fontFamily: 'gi',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 20,
+                        color: textField.hasFocus
+                            ? Color(0xffF35383)
+                            : Colors.white,
+                      ),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 17, horizontal: 17),
+                      focusedBorder: OutlineInputBorder(
+                        // TextField Border
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        borderSide:
+                            BorderSide(color: ButtonBackGroundColor, width: 3),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        // TextField Border
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        borderSide: BorderSide(color: GrayColor, width: 3),
+                      )),
                 ),
-                SizedBox(
-                  height: 16,
-                ),
-                Padding(
-                  // decrease TextField Size put textField To Padding widget
-                  padding: const EdgeInsets.symmetric(horizontal: 44),
-                  child: TextField(
-                    decoration: InputDecoration(
-                        labelText: 'Email',
-                        labelStyle: TextStyle(
-                            fontFamily: 'gi',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 20,
-                            color: GrayColor),
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 17, horizontal: 17),
-                        focusedBorder: OutlineInputBorder(
-                          // TextField Border
-                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                          borderSide: BorderSide(
-                              color: ButtonBackGroundColor, width: 3),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          // TextField Border
-                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                          borderSide: BorderSide(color: GrayColor, width: 3),
-                        )),
-                  ),
-                ),
-              ],
-            ),
-          )),
-        ],
-      ),
+              ),
+            ],
+          ),
+        )),
+      ],
     );
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    textField.dispose();
+    textField2.dispose();
   }
 }

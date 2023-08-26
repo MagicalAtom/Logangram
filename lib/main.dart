@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:logangram/constant/constants.dart';
+import 'package:logangram/screens/home_screen.dart';
 import 'package:logangram/screens/login_screen.dart';
 // import 'package:logangram/screens/switch_account_screen.dart';
 
@@ -12,7 +13,7 @@ class LoganGram extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+      home: HomeScreen(),
       theme: ThemeData(
           elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
