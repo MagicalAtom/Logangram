@@ -3,6 +3,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logangram/constant/constants.dart';
+import 'package:logangram/widgets/bottom_sheet_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -31,20 +32,58 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       backgroundColor: MainBackGroundColor,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-            SizedBox(
+          child: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: ElevatedButton(
+                onPressed: () {
+                  showModalBottomSheet(
+                      isScrollControlled:
+                          true, // واسه اینکه به باتم شیت بفهمونیم یک درگبل اسکرولبل وجت داریم تا این باتم شیت کش بیاد
+                      barrierColor:
+                          Colors.transparent, // تیره کردن بک گراند پشت باتم شیت
+                      backgroundColor: Colors.transparent,
+                      context: context,
+                      builder: (context) {
+                        return Padding(
+                          padding: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).viewInsets.bottom, // برای اینکه هر وقت کیبورد باز شد باتک شیت نره زیر کیبورد
+                          ),
+                          child: DraggableScrollableSheet(
+                            // داخل باتم شیت برای حالت گرفتن اسکرول و درگ
+                            builder: (context, controller) {
+                              return BottomSheetHome(
+                                controller: controller,
+                              ); // همون اسکرول کنترولر
+                            },
+                            initialChildSize:
+                                .5, // بین 0  و 1 و فاصله ای هست برای نشان دادن پیشفرض بدون اسکرول
+                            minChildSize:
+                                .4, // مثل بالا به چه سایزی رسید جمع بشم ؟
+                            maxChildSize: .8, // تا کجا بیام بالا؟
+                          ),
+                        );
+                      });
+                },
+                child: Text("Your Friends")),
+          ),
+          SliverToBoxAdapter(
+            child: SizedBox(
               height: 120,
               width: 500,
               child: _storyList(),
             ),
-        _HomePageCreation()
-
-            ],
           ),
-        ),
-      ),
+          SliverList(
+              delegate: SliverChildBuilderDelegate((context, index) {
+            return Column(
+              children: [_HomePageCreation()],
+            );
+          },
+                  childCount:
+                      6)) // اینجا هر چند بار که لیست ویو بیلدر ما میاد و پست هارو جنریت میکنه با چایلد کاونت ما میام و لیست ویو رو جنریت میکنیم 6 بار و 6 ضربدر مقدار لیست ویو
+        ],
+      )),
     );
   }
 
@@ -54,6 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
       itemCount: 10,
       itemBuilder: (context, index) {
         return Expanded(
+          flex: 1,
           child: Column(
             children: [
               index == 0 ? _getUploadOwnStory() : _getFriendStory(story: true),
@@ -71,14 +111,15 @@ class _HomeScreenState extends State<HomeScreen> {
       itemCount: 3,
       itemBuilder: (context, index) {
         return Expanded(
+          flex: 1,
           child: Column(
             children: [
               SizedBox(
-                height: 29,
+                height: 15,
               ),
               _getPostOwnerInfo(),
               SizedBox(
-                height: 23,
+                height: 15,
               ),
               _getPost()
             ],
@@ -261,52 +302,55 @@ class _HomeScreenState extends State<HomeScreen> {
     bool story = false,
   }) {
     double imagesize = normalImageSize == true ? 6 : 4.5;
-    return Container(
-        margin: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-        child: Column(
-          children: [
-            DottedBorder(
-              color: ButtonBackGroundColor,
-              strokeWidth: 2,
-              dashPattern: nonePattern ? [50, .1221] : [22, 4],
-              borderType: BorderType.RRect,
-              radius: Radius.circular(12),
-              padding: EdgeInsets.all(imagesize),
-              child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(16)),
-                child: Container(
-                  height: story == true ? 64 : 45,
-                  width: story == true ? 64 : 45,
+    return Padding(
+      padding: const EdgeInsets.only(top: 16),
+      child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 8, vertical: 1),
+          child: Column(
+            children: [
+              DottedBorder(
+                color: ButtonBackGroundColor,
+                strokeWidth: 2,
+                dashPattern: nonePattern ? [50, .1221] : [22, 4],
+                borderType: BorderType.RRect,
+                radius: Radius.circular(12),
+                padding: EdgeInsets.all(imagesize),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(16)),
                   child: Container(
-                    width: story == true ? 60 : 40,
-                    height: story == true ? 64 : 40,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(11),
-                        image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: AssetImage("assets/images/profile.png"))),
+                    height: story == true ? 64 : 45,
+                    width: story == true ? 64 : 45,
+                    child: Container(
+                      width: story == true ? 60 : 40,
+                      height: story == true ? 64 : 40,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(11),
+                          image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: AssetImage("assets/images/profile.png"))),
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              "Adibi",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'gi',
-                  fontWeight: FontWeight.bold,
-                  fontSize: 13),
-            )
-          ],
-        ));
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                nonePattern ? '' : 'Adibi',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'gi',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13),
+              )
+            ],
+          )),
+    );
   }
 
   Widget _getUploadOwnStory() {
     return Container(
-      margin: EdgeInsets.only(top: 4, right: 7),
+      margin: EdgeInsets.only(top: 15, right: 7),
       child: Column(
         children: [
           Container(
