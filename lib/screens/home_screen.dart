@@ -3,6 +3,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logangram/constant/constants.dart';
+import 'package:logangram/screens/upload_post.dart';
 import 'package:logangram/widgets/bottom_sheet_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -34,39 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
           child: CustomScrollView(
         slivers: [
-          SliverToBoxAdapter(
-            child: ElevatedButton(
-                onPressed: () {
-                  showModalBottomSheet(
-                      isScrollControlled:
-                          true, // واسه اینکه به باتم شیت بفهمونیم یک درگبل اسکرولبل وجت داریم تا این باتم شیت کش بیاد
-                      barrierColor:
-                          Colors.transparent, // تیره کردن بک گراند پشت باتم شیت
-                      backgroundColor: Colors.transparent,
-                      context: context,
-                      builder: (context) {
-                        return Padding(
-                          padding: EdgeInsets.only(
-                            bottom: MediaQuery.of(context).viewInsets.bottom, // برای اینکه هر وقت کیبورد باز شد باتک شیت نره زیر کیبورد
-                          ),
-                          child: DraggableScrollableSheet(
-                            // داخل باتم شیت برای حالت گرفتن اسکرول و درگ
-                            builder: (context, controller) {
-                              return BottomSheetHome(
-                                controller: controller,
-                              ); // همون اسکرول کنترولر
-                            },
-                            initialChildSize:
-                                .5, // بین 0  و 1 و فاصله ای هست برای نشان دادن پیشفرض بدون اسکرول
-                            minChildSize:
-                                .4, // مثل بالا به چه سایزی رسید جمع بشم ؟
-                            maxChildSize: .8, // تا کجا بیام بالا؟
-                          ),
-                        );
-                      });
-                },
-                child: Text("Your Friends")),
-          ),
+
           SliverToBoxAdapter(
             child: SizedBox(
               height: 120,
@@ -226,7 +195,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ],
                         ),
-                        Image.asset("assets/images/icon_share.png"),
+                       InkWell(onTap: _showModelBottomSheet,child:  Image.asset("assets/images/icon_share.png"),),
                         Image.asset("assets/images/icon_save.png"),
                       ],
                     ),
@@ -311,7 +280,7 @@ class _HomeScreenState extends State<HomeScreen> {
               DottedBorder(
                 color: ButtonBackGroundColor,
                 strokeWidth: 2,
-                dashPattern: nonePattern ? [50, .1221] : [22, 4],
+                dashPattern: nonePattern ? [50, .1221] : [23, 4],
                 borderType: BorderType.RRect,
                 radius: Radius.circular(12),
                 padding: EdgeInsets.all(imagesize),
@@ -349,41 +318,77 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _getUploadOwnStory() {
-    return Container(
-      margin: EdgeInsets.only(top: 15, right: 7),
-      child: Column(
-        children: [
-          Container(
-            width: 77,
-            height: 77,
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(17)),
-            child: Padding(
-              padding: EdgeInsets.all(2),
-              child: Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                  color: MainBackGroundColor,
-                  borderRadius: BorderRadius.circular(17),
+    return InkWell(
+      onTap: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context){
+          return UploadPost();
+        }));
+      },
+      child: Container(
+        margin: EdgeInsets.only(top: 15, right: 7),
+        child: Column(
+          children: [
+            Container(
+              width: 77,
+              height: 77,
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(17)),
+              child: Padding(
+                padding: EdgeInsets.all(2),
+                child: Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: MainBackGroundColor,
+                    borderRadius: BorderRadius.circular(17),
+                  ),
+                  child: Image.asset('assets/images/icon_plus.png'),
                 ),
-                child: Image.asset('assets/images/icon_plus.png'),
               ),
             ),
-          ),
-          SizedBox(
-            height: 12,
-          ),
-          Text(
-            "Your Story",
-            style: TextStyle(
-                color: Colors.white,
-                fontFamily: 'gi',
-                fontWeight: FontWeight.bold,
-                fontSize: 13),
-          )
-        ],
+            SizedBox(
+              height: 12,
+            ),
+            Text(
+              "Your Story",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'gi',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 13),
+            )
+          ],
+        ),
       ),
     );
+  }
+  Future _showModelBottomSheet(){
+    return showModalBottomSheet(
+        isScrollControlled:
+        true, // واسه اینکه به باتم شیت بفهمونیم یک درگبل اسکرولبل وجت داریم تا این باتم شیت کش بیاد
+        barrierColor:
+        Colors.transparent, // تیره کردن بک گراند پشت باتم شیت
+        backgroundColor: Colors.transparent,
+        context: context,
+        builder: (context) {
+          return Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom, // برای اینکه هر وقت کیبورد باز شد باتک شیت نره زیر کیبورد
+            ),
+            child: DraggableScrollableSheet(
+              // داخل باتم شیت برای حالت گرفتن اسکرول و درگ
+              builder: (context, controller) {
+                return BottomSheetHome(
+                  controller: controller,
+                ); // همون اسکرول کنترولر
+              },
+              initialChildSize:
+              .5, // بین 0  و 1 و فاصله ای هست برای نشان دادن پیشفرض بدون اسکرول
+              minChildSize:
+              .4, // مثل بالا به چه سایزی رسید جمع بشم ؟
+              maxChildSize: .8, // تا کجا بیام بالا؟
+            ),
+          );
+        });
   }
 }

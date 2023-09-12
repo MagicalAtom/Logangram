@@ -30,7 +30,7 @@ SliverToBoxAdapter
 
 class BottomSheetHome extends StatelessWidget {
   const BottomSheetHome({required this.controller, super.key});
-  final ScrollController? controller;
+  final ScrollController? controller; // DraggbleScrollblesheet Controller
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
